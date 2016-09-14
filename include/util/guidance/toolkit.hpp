@@ -18,7 +18,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/functional/hash.hpp>
-#include <boost/tokenizer.hpp>
 
 namespace osrm
 {
