@@ -238,6 +238,10 @@ function way_function (way, result)
     return
   end
 
+  -- default to driving mode, may get overwritten below
+  result.forward_mode = mode.driving
+  result.backward_mode = mode.driving
+
   -- we dont route over areas
   local area = way:get_value_by_key("area")
   if ignore_areas and area and "yes" == area then
@@ -248,6 +252,36 @@ function way_function (way, result)
   local hov = way:get_value_by_key("hov")
   if ignore_hov_ways and hov and "designated" == hov then
     return
+  end
+
+  -- also respect user-preference for HOV-only ways when all lanes are HOV-designated
+  local hov_lanes_forward = way:get_value_by_key("hov:lanes:forward")
+  local hov_lanes_backward = way:get_value_by_key("hov:lanes:backward")
+
+  if ignore_hov_ways and hov_lanes_forward and hov_lanes_forward ~= "" then
+    local forward_all_designated = true
+    for lane in hov_lanes_forward:gmatch("(%w+)") do
+      if lane and lane ~= "designated" then
+        forward_all_designated = false
+        break
+      end
+    end
+    if forward_all_designated then
+      result.forward_mode = mode.inaccessible
+    end
+  end
+
+  if ignore_hov_ways and hov_lanes_backward and hov_lanes_backward ~= "" then
+    local backward_all_designated = true
+    for lane in hov_lanes_backward:gmatch("(%w+)") do
+      if lane and lane ~= "designated" then
+        backward_all_designated = false
+        break
+      end
+    end
+    if backward_all_designated then
+      result.backward_mode = mode.inaccessible
+    end
   end
 
   -- respect user-preference for toll=yes ways
@@ -277,9 +311,6 @@ function way_function (way, result)
   if access_tag_blacklist[access] then
     return
   end
-
-  result.forward_mode = mode.driving
-  result.backward_mode = mode.driving
 
   -- handling ferries and piers
   local route_speed = speed_profile[route]
