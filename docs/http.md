@@ -32,7 +32,8 @@ http://{server}/{service}/{version}/{profile}/{coordinates}[.{format}]?option=va
     |-------------|-----------------------------------------------------------|
     | [`route`](#service-route)     | fastest path between given coordinates                   |
     | [`nearest`](#service-nearest)   | returns the nearest street segment for a given coordinate |
-    | [`table`](#service-table)     | computes distance tables for given coordinates            |
+    | [`table_dur`](#service-table)     | computes duration tables for given coordinates            |
+    | [`table_dist`](#service-table)     | computes distance tables for given coordinates            |
     | [`match`](#service-match)     | matches given coordinates to the road network             |
     | [`trip`](#service-trip)      | Compute the fastest round trip between given coordinates |
     | [`tile`](#service-tile)      | Return vector tiles containing debugging info             |
