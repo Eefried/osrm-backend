@@ -156,6 +156,17 @@ Feature: Car - Restricted access
             | primary | yes        | x     |
             | primary | no         | x     |
 
+    Scenario: Car - a way with all lanes HOV-designated is inaccessible by default (similar to hov=designated)
+        Then routability should be
+            | highway | hov:lanes:forward      | hov:lanes:backward     | forw | backw |
+            | primary | designated             | designated             |      |       |
+            | primary |                        | designated             | x    |       |
+            | primary | designated             |                        |      | x     |
+            | primary | designated\|designated | designated\|designated |      |       |
+            | primary | designated\|no         | designated\|no         | x    | x     |
+            | primary | yes\|no                | yes\|no                | x    | x     |
+            | primary |                        |                        | x    | x     |
+
      Scenario: Car - these toll roads always work
         Then routability should be
             | highway | toll        | bothw |
